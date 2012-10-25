@@ -15,8 +15,16 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 //
 
+#define BUTTON_MARGIN 4
+#define CALENDAR_MARGIN 5
+#define TOP_HEIGHT 44
+#define DAYS_HEADER_HEIGHT 22
+#define DEFAULT_CELL_WIDTH 43
+#define CELL_BORDER_WIDTH 1
+
 @protocol CKCalendarDelegate;
 
+@class GradientView;
 @interface CKCalendarView : UIView
 
 enum {
@@ -70,6 +78,39 @@ typedef int startDay;
 @property (nonatomic, strong) UIColor *nonCurrentMonthDateTextColor;
 @property (nonatomic, strong) UIColor *disabledDateTextColor;
 @property (nonatomic, strong) UIColor *disabledDateBackgroundColor;
+@property(nonatomic, strong) UIView *highlight;
+@property(nonatomic, strong) UILabel *titleLabel;
+@property(nonatomic, strong) UIButton *prevButton;
+@property(nonatomic, strong) UIButton *nextButton;
+@property(nonatomic, strong) UIView *calendarContainer;
+@property(nonatomic, strong) GradientView *daysHeader;
+@property(nonatomic, strong) NSArray *dayOfWeekLabels;
+@property(nonatomic, strong) NSMutableArray *dateButtons;
+@property(nonatomic, strong) NSDateFormatter *dateFormatter;
+
+@property (nonatomic) startDay calendarStartDay;
+@property (nonatomic, strong) NSDate *monthShowing;
+@property (nonatomic, strong) NSCalendar *calendar;
+@property(nonatomic, assign) CGFloat cellWidth;
+
+- (CGRect)calculateDayCellFrame:(NSDate *)date;
+- (void)moveCalendarToNextMonth;
+- (void)moveCalendarToPreviousMonth;
+- (void)dateButtonPressed:(id)sender;
+
+// Calendar Helpers
+- (NSDate *)firstDayOfMonthContainingDate:(NSDate *)date;
+- (NSDate *)firstDayOfNextMonthContainingDate:(NSDate *)date;
+- (NSComparisonResult)compareByMonth:(NSDate *)date toDate:(NSDate *)otherDate;
+- (NSArray *)getDaysOfTheWeek;
+- (NSInteger)placeInWeekForDate:(NSDate *)date;
+- (BOOL)dateIsToday:(NSDate *)date;
+- (BOOL)date:(NSDate *)date1 isSameDayAsDate:(NSDate *)date2;
+- (NSInteger)weekNumberInMonthForDate:(NSDate *)date;
+- (NSInteger)numberOfWeeksInMonthContainingDate:(NSDate *)date;
+- (NSDate *)nextDay:(NSDate *)date;
+- (NSDate *)previousDay:(NSDate *)date;
++ (UIImage *)imageNamed:(NSString *)name withColor:(UIColor *)color;
 
 @end
 
@@ -78,3 +119,22 @@ typedef int startDay;
 - (void)calendar:(CKCalendarView *)calendar didSelectDate:(NSDate *)date;
 
 @end
+
+@class CALayer;
+@class CAGradientLayer;
+
+@interface GradientView : UIView
+
+@property(nonatomic, strong, readonly) CAGradientLayer *gradientLayer;
+- (void)setColors:(NSArray *)colors;
+
+@end
+
+@interface DateButton : UIButton
+
+@property (nonatomic, strong) NSDate *date;
+@property (nonatomic, strong) NSCalendar *calendar;
+@property (nonatomic, strong) CAGradientLayer *gradientLayer;
+
+@end
+

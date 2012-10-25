@@ -20,25 +20,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import "CKCalendarView.h"
 
-#define BUTTON_MARGIN 4
-#define CALENDAR_MARGIN 5
-#define TOP_HEIGHT 44
-#define DAYS_HEADER_HEIGHT 22
-#define DEFAULT_CELL_WIDTH 43
-#define CELL_BORDER_WIDTH 1
-
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
-
-@class CALayer;
-@class CAGradientLayer;
-
-@interface GradientView : UIView
-
-@property(nonatomic, strong, readonly) CAGradientLayer *gradientLayer;
-- (void)setColors:(NSArray *)colors;
-
-@end
 
 @implementation GradientView
 
@@ -65,17 +48,11 @@
 @end
 
 
-@interface DateButton : UIButton
-
-@property (nonatomic, strong) NSDate *date;
-@property (nonatomic, strong) NSCalendar *calendar;
-
-@end
-
 @implementation DateButton
 
 @synthesize date = _date;
 @synthesize calendar = _calendar;
+@synthesize gradientLayer = _gradientLayer;
 
 - (void)setDate:(NSDate *)date {
     _date = date;
@@ -87,21 +64,6 @@
 
 
 @interface CKCalendarView ()
-
-@property(nonatomic, strong) UIView *highlight;
-@property(nonatomic, strong) UILabel *titleLabel;
-@property(nonatomic, strong) UIButton *prevButton;
-@property(nonatomic, strong) UIButton *nextButton;
-@property(nonatomic, strong) UIView *calendarContainer;
-@property(nonatomic, strong) GradientView *daysHeader;
-@property(nonatomic, strong) NSArray *dayOfWeekLabels;
-@property(nonatomic, strong) NSMutableArray *dateButtons;
-@property(nonatomic, strong) NSDateFormatter *dateFormatter;
-
-@property (nonatomic) startDay calendarStartDay;
-@property (nonatomic, strong) NSDate *monthShowing;
-@property (nonatomic, strong) NSCalendar *calendar;
-@property(nonatomic, assign) CGFloat cellWidth;
 
 
 @end
@@ -369,7 +331,8 @@
     self.disabledDateBackgroundColor = self.dateBackgroundColor;
 }
 
-- (CGRect)calculateDayCellFrame:(NSDate *)date {
+- (CGRect)calculateDayCellFrame:(NSDate *)date;
+{
     NSComparisonResult monthComparison = [self compareByMonth:date toDate:self.monthShowing];
     NSInteger row;
     if (monthComparison == NSOrderedAscending) {
@@ -384,19 +347,22 @@
     return CGRectMake(placeInWeek * (self.cellWidth + CELL_BORDER_WIDTH), (row * (self.cellWidth + CELL_BORDER_WIDTH)) + CGRectGetMaxY(self.daysHeader.frame) + CELL_BORDER_WIDTH, self.cellWidth, self.cellWidth);
 }
 
-- (void)moveCalendarToNextMonth {
+- (void)moveCalendarToNextMonth;
+{
     NSDateComponents* comps = [[NSDateComponents alloc] init];
     [comps setMonth:1];
     self.monthShowing = [self.calendar dateByAddingComponents:comps toDate:self.monthShowing options:0];
 }
 
-- (void)moveCalendarToPreviousMonth {
+- (void)moveCalendarToPreviousMonth;
+{
     NSDateComponents* comps = [[NSDateComponents alloc] init];
     [comps setMonth:-1];
     self.monthShowing = [self.calendar dateByAddingComponents:comps toDate:self.monthShowing options:0];
 }
 
-- (void)dateButtonPressed:(id)sender {
+- (void)dateButtonPressed:(id)sender;
+{
     DateButton *dateButton = sender;
     NSDate *date = dateButton.date;
     if (self.minimumDate && [date compare:self.minimumDate] == NSOrderedAscending) {
@@ -493,20 +459,23 @@
 
 #pragma mark - Calendar helpers
 
-- (NSDate *)firstDayOfMonthContainingDate:(NSDate *)date {
+- (NSDate *)firstDayOfMonthContainingDate:(NSDate *)date;
+{
     NSDateComponents *comps = [self.calendar components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:date];
     comps.day = 1;
     return [self.calendar dateFromComponents:comps];
 }
 
-- (NSDate *)firstDayOfNextMonthContainingDate:(NSDate *)date {
+- (NSDate *)firstDayOfNextMonthContainingDate:(NSDate *)date;
+{
     NSDateComponents *comps = [self.calendar components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:date];
     comps.day = 1;
     comps.month = comps.month + 1;
     return [self.calendar dateFromComponents:comps];
 }
 
-- (NSComparisonResult)compareByMonth:(NSDate *)date toDate:(NSDate *)otherDate {
+- (NSComparisonResult)compareByMonth:(NSDate *)date toDate:(NSDate *)otherDate;
+{
     NSDateComponents *day = [self.calendar components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:date];
     NSDateComponents *day2 = [self.calendar components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:otherDate];
 
@@ -523,7 +492,8 @@
     }
 }
 
-- (NSArray *)getDaysOfTheWeek {
+- (NSArray *)getDaysOfTheWeek;
+{
     // adjust array depending on which weekday should be first
     NSArray *weekdays = [self.dateFormatter shortWeekdaySymbols];
     NSUInteger firstWeekdayIndex = [self.calendar firstWeekday] - 1;
@@ -534,16 +504,19 @@
     return weekdays;
 }
 
-- (NSInteger)placeInWeekForDate:(NSDate *)date {
+- (NSInteger)placeInWeekForDate:(NSDate *)date;
+{
     NSDateComponents *compsFirstDayInMonth = [self.calendar components:NSWeekdayCalendarUnit fromDate:date];
     return (compsFirstDayInMonth.weekday - 1 - self.calendar.firstWeekday + 8) % 7;
 }
 
-- (BOOL)dateIsToday:(NSDate *)date {
+- (BOOL)dateIsToday:(NSDate *)date;
+{
     return [self date:[NSDate date] isSameDayAsDate:date];
 }
 
-- (BOOL)date:(NSDate *)date1 isSameDayAsDate:(NSDate *)date2 {
+- (BOOL)date:(NSDate *)date1 isSameDayAsDate:(NSDate *)date2;
+{
     // Both dates must be defined, or they're not the same
     if (date1 == nil || date2 == nil) {
         return NO;
@@ -557,30 +530,35 @@
             [day2 era] == [day era]);
 }
 
-- (NSInteger)weekNumberInMonthForDate:(NSDate *)date {
+- (NSInteger)weekNumberInMonthForDate:(NSDate *)date;
+{
     // Return zero-based week in month
     NSInteger placeInWeek = [self placeInWeekForDate:self.monthShowing];
     NSDateComponents *comps = [self.calendar components:(NSDayCalendarUnit) fromDate:date];
     return (comps.day + placeInWeek - 1) / 7;
 }
 
-- (NSInteger)numberOfWeeksInMonthContainingDate:(NSDate *)date {
+- (NSInteger)numberOfWeeksInMonthContainingDate:(NSDate *)date;
+{
     return [self.calendar rangeOfUnit:NSWeekCalendarUnit inUnit:NSMonthCalendarUnit forDate:date].length;
 }
 
-- (NSDate *)nextDay:(NSDate *)date {
+- (NSDate *)nextDay:(NSDate *)date;
+{
     NSDateComponents *comps = [[NSDateComponents alloc] init];
     [comps setDay:1];
     return [self.calendar dateByAddingComponents:comps toDate:date options:0];
 }
 
-- (NSDate *)previousDay:(NSDate *)date {
+- (NSDate *)previousDay:(NSDate *)date;
+{
     NSDateComponents *comps = [[NSDateComponents alloc] init];
     [comps setDay:-1];
     return [self.calendar dateByAddingComponents:comps toDate:date options:0];
 }
 
-+ (UIImage *)imageNamed:(NSString *)name withColor:(UIColor *)color {
++ (UIImage *)imageNamed:(NSString *)name withColor:(UIColor *)color;
+{
     UIImage *img = [UIImage imageNamed:name];
 
     UIGraphicsBeginImageContextWithOptions(img.size, NO, [UIScreen mainScreen].scale);

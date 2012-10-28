@@ -16,16 +16,19 @@
 //
 
 #define BUTTON_MARGIN 4
-#define CALENDAR_MARGIN 5
+#define CALENDAR_MARGIN 2
 #define TOP_HEIGHT 44
 #define DAYS_HEADER_HEIGHT 22
 #define DEFAULT_CELL_WIDTH 43
 #define CELL_BORDER_WIDTH 1
 
+#import "CKCalendarViewPopoverController.h"
+
 @protocol CKCalendarDelegate;
 
 @class GradientView;
 @interface CKCalendarView : UIView
+< CKCalendarViewPopoverControllerDelegate, UIPopoverControllerDelegate >
 
 enum {
     startSunday = 1,
@@ -80,6 +83,8 @@ typedef int startDay;
 @property (nonatomic, strong) UIColor *disabledDateBackgroundColor;
 @property(nonatomic, strong) UIView *highlight;
 @property(nonatomic, strong) UILabel *titleLabel;
+@property(nonatomic, strong) UIButton *titleButton;
+@property (nonatomic, strong) UIPopoverController *monthYearPopoverController;
 @property(nonatomic, strong) UIButton *prevButton;
 @property(nonatomic, strong) UIButton *nextButton;
 @property(nonatomic, strong) UIView *calendarContainer;
@@ -97,6 +102,7 @@ typedef int startDay;
 - (void)moveCalendarToNextMonth;
 - (void)moveCalendarToPreviousMonth;
 - (void)dateButtonPressed:(id)sender;
+- (void)titleButtonPressed:(id)sender;
 
 // Calendar Helpers
 - (NSDate *)firstDayOfMonthContainingDate:(NSDate *)date;

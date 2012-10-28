@@ -19,6 +19,7 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <QuartzCore/QuartzCore.h>
 #import "CKCalendarView.h"
+#import "CKCalendarViewPopoverController.h"
 
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
@@ -72,6 +73,8 @@
 
 @synthesize highlight = _highlight;
 @synthesize titleLabel = _titleLabel;
+@synthesize titleButton = _titleButton;
+@synthesize monthYearPopoverController = _monthYearPopoverController;
 @synthesize prevButton = _prevButton;
 @synthesize nextButton = _nextButton;
 @synthesize calendarContainer = _calendarContainer;
@@ -141,7 +144,14 @@
         titleLabel.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
         [self addSubview:titleLabel];
         self.titleLabel = titleLabel;
-
+        
+        UIButton *titleButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [titleButton setFrame:[self.titleLabel frame]];
+        [titleButton addTarget:self action:@selector(titleButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [titleButton setBackgroundColor:[UIColor clearColor]];
+        [self addSubview:titleButton];
+        self.titleButton = titleButton;
+        
         UIButton *prevButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [prevButton setImage:[UIImage imageNamed:@"left_arrow.png"] forState:UIControlStateNormal];
         prevButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
@@ -223,6 +233,8 @@
     self.highlight.frame = CGRectMake(1, 1, self.bounds.size.width - 2, 1);
 
     self.titleLabel.frame = CGRectMake(0, 0, self.bounds.size.width, TOP_HEIGHT);
+    self.titleButton.frame = self.titleLabel.frame;
+    
     self.prevButton.frame = CGRectMake(BUTTON_MARGIN, BUTTON_MARGIN, 48, 38);
     self.nextButton.frame = CGRectMake(self.bounds.size.width - 48 - BUTTON_MARGIN, BUTTON_MARGIN, 48, 38);
 
@@ -373,6 +385,50 @@
         self.selectedDate = date;
         [self.delegate calendar:self didSelectDate:self.selectedDate];
     }
+}
+
+-(UIPopoverController *)monthYearPopoverController;
+{
+    if (nil != _monthYearPopoverController) {
+        return _monthYearPopoverController;
+    }
+    
+    CKCalendarViewPopoverController *contentView = [[CKCalendarViewPopoverController alloc] initWithNibName:@"CKCalendarViewPopover" bundle:nil];
+    [contentView setDelegate:self];
+
+    _monthYearPopoverController = [[UIPopoverController alloc] initWithContentViewController:contentView];
+    [_monthYearPopoverController setDelegate:self];
+    [_monthYearPopoverController setPopoverContentSize:CGSizeMake(320.f, 260.f)];
+ 
+    return _monthYearPopoverController;
+}
+
+- (void)titleButtonPressed:(id)sender;
+{
+    // Need to present popup or actionSheet allowing quick change of month and year via picker
+    if (nil != _monthYearPopoverController) {
+        [self.monthYearPopoverController dismissPopoverAnimated:YES];
+    }
+    if (self.monthYearPopoverController.popoverVisible == NO) {
+        [(CKCalendarViewPopoverController *)self.monthYearPopoverController.contentViewController setCurrentShowingDate:[self.monthShowing copy]];
+        [self.monthYearPopoverController presentPopoverFromRect:[self.titleButton frame] inView:self.superview permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
+}
+
+#pragma mark - CKCalendarViewPopoverControllerDelegate Methods
+
+-(void)cancelChangeToNewDate;
+{
+    [self.monthYearPopoverController dismissPopoverAnimated:YES];
+    [self setMonthYearPopoverController:nil];
+}
+
+-(void)dateChangeToNewDate:(NSDate *)newDate;
+{
+    DDLogVerbose(@"Change date to %@",newDate);
+    [self setMonthShowing:newDate];
+    [self.monthYearPopoverController dismissPopoverAnimated:YES];
+    [self setMonthYearPopoverController:nil];
 }
 
 #pragma mark - Theming getters/setters

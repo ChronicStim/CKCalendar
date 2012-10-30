@@ -228,6 +228,9 @@
 
     CGRect newFrame = self.frame;
     newFrame.size.height = containerHeight + CALENDAR_MARGIN + TOP_HEIGHT;
+    if (self.frame.size.height != newFrame.size.height) {
+        [self.delegate calendar:self containerHeightHasChanged:newFrame];
+    }
     self.frame = newFrame;
 
     self.highlight.frame = CGRectMake(1, 1, self.bounds.size.width - 2, 1);

@@ -123,6 +123,7 @@ typedef int startDay;
 @protocol CKCalendarDelegate <NSObject>
 
 - (void)calendar:(CKCalendarView *)calendar didSelectDate:(NSDate *)date;
+- (void)calendar:(CKCalendarView *)calendar containerHeightHasChanged:(CGRect)containerRect;
 
 @end
 

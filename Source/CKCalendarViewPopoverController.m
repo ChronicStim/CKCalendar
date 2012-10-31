@@ -7,6 +7,7 @@
 //
 
 #import "CKCalendarViewPopoverController.h"
+#import "PainTrackerAppDelegate.h"
 
 @interface CKCalendarViewPopoverController ()
 
@@ -15,9 +16,6 @@
 @implementation CKCalendarViewPopoverController
 @synthesize currentShowingDate = _currentShowingDate;
 @synthesize pickerView = _pickerView;
-@synthesize barButtonCancel = _barButtonCancel;
-@synthesize barButtonSelect = _barButtonSelect;
-@synthesize labelMessage = _labelMessage;
 @synthesize delegate = _delegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -34,12 +32,25 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [self.pickerView awakeFromNib];
+    [self setNavBar];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)setNavBar {
+    
+	PainTrackerAppDelegate *appDelegate = (PainTrackerAppDelegate *)[[UIApplication sharedApplication] delegate];
+	NSString *titleStr = NSLocalizedStringFromTable(@"Month Selection",@"PainTracker",@"Month Selection");
+	self.navigationItem.titleView = [appDelegate titleBarLabelWithString:titleStr];
+	self.navigationController.navigationBar.tintColor = [UIColor cptToolbarTintColor];
+    
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Apply" style:UIBarButtonItemStylePlain target:self action:@selector(barButtonSelectPressed:)];
+    [rightButton setTintColor:[UIColor cptPrimaryColorSelected]];
+    self.navigationItem.rightBarButtonItem = rightButton;
 }
 
 -(void)setCurrentShowingDate:(NSDate *)currentShowingDate;

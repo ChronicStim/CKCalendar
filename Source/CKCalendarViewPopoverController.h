@@ -15,9 +15,6 @@
 
 @property (strong, nonatomic) NSDate *currentShowingDate;
 @property (weak, nonatomic) IBOutlet UIMonthYearPicker *pickerView;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *barButtonCancel;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *barButtonSelect;
-@property (weak, nonatomic) IBOutlet UILabel *labelMessage;
 @property (weak, nonatomic) id <CKCalendarViewPopoverControllerDelegate> delegate;
 
 - (IBAction)barButtonCancelPressed:(id)sender;

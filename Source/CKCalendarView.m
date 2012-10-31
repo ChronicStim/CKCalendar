@@ -396,12 +396,13 @@
         return _monthYearPopoverController;
     }
     
-    CKCalendarViewPopoverController *contentView = [[CKCalendarViewPopoverController alloc] initWithNibName:@"CKCalendarViewPopover" bundle:nil];
-    [contentView setDelegate:self];
+    CKCalendarViewPopoverController *pickerView = [[CKCalendarViewPopoverController alloc] initWithNibName:@"CKCalendarViewPopover" bundle:nil];
+    [pickerView setDelegate:self];
+    UINavigationController *contentView = [[UINavigationController alloc] initWithRootViewController:pickerView];
 
     _monthYearPopoverController = [[UIPopoverController alloc] initWithContentViewController:contentView];
     [_monthYearPopoverController setDelegate:self];
-    [_monthYearPopoverController setPopoverContentSize:CGSizeMake(320.f, 260.f)];
+    [_monthYearPopoverController setPopoverContentSize:CGSizeMake(320.f, 250.f)];
  
     return _monthYearPopoverController;
 }
@@ -413,8 +414,11 @@
         [self.monthYearPopoverController dismissPopoverAnimated:YES];
     }
     if (self.monthYearPopoverController.popoverVisible == NO) {
-        [(CKCalendarViewPopoverController *)self.monthYearPopoverController.contentViewController setCurrentShowingDate:[self.monthShowing copy]];
-        [self.monthYearPopoverController presentPopoverFromRect:[self.titleButton frame] inView:self.superview permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        [self.delegate calendar:self willDisplayMonthYearPopover:self.monthYearPopoverController];
+        UINavigationController *navController = (UINavigationController *)self.monthYearPopoverController.contentViewController;
+        CKCalendarViewPopoverController *mainController = (CKCalendarViewPopoverController *)[navController topViewController];
+        [mainController setCurrentShowingDate:[self.monthShowing copy]];
+        [self.monthYearPopoverController presentPopoverFromRect:[self.titleButton frame] inView:self permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     }
 }
 

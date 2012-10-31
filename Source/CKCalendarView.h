@@ -124,6 +124,7 @@ typedef int startDay;
 
 - (void)calendar:(CKCalendarView *)calendar didSelectDate:(NSDate *)date;
 - (void)calendar:(CKCalendarView *)calendar containerHeightHasChanged:(CGRect)containerRect;
+- (void)calendar:(CKCalendarView *)calendar willDisplayMonthYearPopover:(UIPopoverController *)popoverController;
 
 @end
 

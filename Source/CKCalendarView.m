@@ -318,7 +318,8 @@
     [self setNeedsLayout];
 }
 
-- (void)setDefaultStyle {
+- (void)setDefaultStyle;
+{
     self.backgroundColor = UIColorFromRGB(0x393B40);
 
     [self setTitleColor:[UIColor whiteColor]];

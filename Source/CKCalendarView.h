@@ -45,6 +45,8 @@ typedef int startDay;
 - (id)initWithStartDay:(startDay)firstDay;
 - (id)initWithStartDay:(startDay)firstDay frame:(CGRect)frame;
 
+- (void)setDefaultStyle;
+
 // Theming
 - (void)setTitleFont:(UIFont *)font;
 - (UIFont *)titleFont;

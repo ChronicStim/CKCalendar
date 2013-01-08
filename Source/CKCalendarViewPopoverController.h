@@ -19,6 +19,7 @@
 
 - (IBAction)barButtonCancelPressed:(id)sender;
 - (IBAction)barButtonSelectPressed:(id)sender;
+- (IBAction)barButtonTodayPressed:(id)sender;
 
 @end
 
@@ -26,5 +27,6 @@
 
 -(void)cancelChangeToNewDate;
 -(void)dateChangeToNewDate:(NSDate *)newDate;
+-(void)dateChangeToToday;
 
 @end

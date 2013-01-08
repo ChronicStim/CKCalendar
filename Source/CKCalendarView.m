@@ -439,6 +439,12 @@
     [self setMonthYearPopoverController:nil];
 }
 
+-(void)dateChangeToToday;
+{
+    [self dateChangeToNewDate:[NSDate date]];
+    [self.delegate calendar:self didSelectDate:[NSDate date]];
+}
+
 #pragma mark - Theming getters/setters
 
 - (void)setTitleFont:(UIFont *)font {

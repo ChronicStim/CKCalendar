@@ -48,6 +48,10 @@
 	self.navigationItem.titleView = [appDelegate titleBarLabelWithString:titleStr];
 	self.navigationController.navigationBar.tintColor = [UIColor cptToolbarTintColor];
     
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Today" style:UIBarButtonItemStylePlain target:self action:@selector(barButtonTodayPressed:)];
+    [leftButton setTintColor:[UIColor cptPrimaryColor]];
+    self.navigationItem.leftBarButtonItem = leftButton;
+    
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Apply" style:UIBarButtonItemStylePlain target:self action:@selector(barButtonSelectPressed:)];
     [rightButton setTintColor:[UIColor cptPrimaryColorSelected]];
     self.navigationItem.rightBarButtonItem = rightButton;
@@ -69,6 +73,11 @@
 
     [self.delegate dateChangeToNewDate:[[self.pickerView date] copy]];
     
+}
+
+- (IBAction)barButtonTodayPressed:(id)sender;
+{
+    [self.delegate dateChangeToToday];
 }
 
 #pragma mark - UIMonthYearPickerDelegate Methods

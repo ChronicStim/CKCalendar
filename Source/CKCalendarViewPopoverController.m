@@ -43,10 +43,12 @@
 
 -(void)setNavBar {
     
-	PainTrackerAppDelegate *appDelegate = (PainTrackerAppDelegate *)[[UIApplication sharedApplication] delegate];
 	NSString *titleStr = NSLocalizedStringFromTable(@"Month Selection",@"PainTracker",@"Month Selection");
-	self.navigationItem.titleView = [appDelegate titleBarLabelWithString:titleStr];
-	self.navigationController.navigationBar.tintColor = [UIColor cptToolbarTintColor];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self updateNavigationBarTitle:titleStr showHelpButton:NO];
+    } else {
+        [self updateNavigationBarTitle:titleStr showHelpButton:NO];
+    }
     
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Today" style:UIBarButtonItemStylePlain target:self action:@selector(barButtonTodayPressed:)];
     [leftButton setTintColor:[UIColor cptPrimaryColor]];

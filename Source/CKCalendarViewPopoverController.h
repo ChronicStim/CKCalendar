@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CPTUIViewController.h"
 #import "UIMonthYearPicker.h"
 
 @protocol CKCalendarViewPopoverControllerDelegate;
-@interface CKCalendarViewPopoverController : UIViewController
+@interface CKCalendarViewPopoverController : CPTUIViewController
 < UIMonthYearPickerDelegate >
 
 @property (strong, nonatomic) NSDate *currentShowingDate;

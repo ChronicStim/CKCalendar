@@ -50,11 +50,11 @@
         [self updateNavigationBarTitle:titleStr showHelpButton:NO];
     }
     
-    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Today" style:UIBarButtonItemStylePlain target:self action:@selector(barButtonTodayPressed:)];
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Today",@"PainTracker",@"Today") style:UIBarButtonItemStylePlain target:self action:@selector(barButtonTodayPressed:)];
     [leftButton setTintColor:[UIColor cptPrimaryColor]];
     self.navigationItem.leftBarButtonItem = leftButton;
     
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Apply" style:UIBarButtonItemStylePlain target:self action:@selector(barButtonSelectPressed:)];
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Apply",@"PainTracker",@"Apply") style:UIBarButtonItemStylePlain target:self action:@selector(barButtonSelectPressed:)];
     [rightButton setTintColor:[UIColor cptPrimaryColorSelected]];
     self.navigationItem.rightBarButtonItem = rightButton;
 }

@@ -21,6 +21,8 @@
 #define DAYS_HEADER_HEIGHT 22
 #define DEFAULT_CELL_WIDTH 43
 #define CELL_BORDER_WIDTH 1
+#define kCalendarArrowButtonLeft @"IconCalendarArrowBackward"
+#define kCalendarArrowButtonRight @"IconCalendarArrowForward"
 
 #import "CKCalendarViewPopoverController.h"
 

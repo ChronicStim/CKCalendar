@@ -153,14 +153,14 @@
         self.titleButton = titleButton;
         
         UIButton *prevButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [prevButton setImage:[UIImage imageNamed:@"left_arrow.png"] forState:UIControlStateNormal];
+        [prevButton setImage:[UIImage imageNamed:kCalendarArrowButtonLeft] forState:UIControlStateNormal];
         prevButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
         [prevButton addTarget:self action:@selector(moveCalendarToPreviousMonth) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:prevButton];
         self.prevButton = prevButton;
 
         UIButton *nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [nextButton setImage:[UIImage imageNamed:@"right_arrow.png"] forState:UIControlStateNormal];
+        [nextButton setImage:[UIImage imageNamed:kCalendarArrowButtonRight] forState:UIControlStateNormal];
         nextButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin;
         [nextButton addTarget:self action:@selector(moveCalendarToNextMonth) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:nextButton];
@@ -214,7 +214,8 @@
 }
 
 - (id)initWithFrame:(CGRect)frame {
-    return [self initWithStartDay:startSunday frame:frame];
+    return [super initWithFrame:frame];
+//    return [self initWithStartDay:startSunday frame:frame];
 }
 
 - (void)layoutSubviews {
@@ -241,12 +242,12 @@
     self.prevButton.frame = CGRectMake(BUTTON_MARGIN, BUTTON_MARGIN, 48, 38);
     self.nextButton.frame = CGRectMake(self.bounds.size.width - 48 - BUTTON_MARGIN, BUTTON_MARGIN, 48, 38);
 
-    self.calendarContainer.frame = CGRectMake(CALENDAR_MARGIN, CGRectGetMaxY(self.titleLabel.frame), containerWidth, containerHeight);
-    self.daysHeader.frame = CGRectMake(0, 0, self.calendarContainer.frame.size.width, DAYS_HEADER_HEIGHT);
+    self.calendarContainer.frame = CGRectIntegral(CGRectMake(CALENDAR_MARGIN, CGRectGetMaxY(self.titleLabel.frame), containerWidth, containerHeight));
+    self.daysHeader.frame = CGRectIntegral(CGRectMake(0, 0, self.calendarContainer.frame.size.width, DAYS_HEADER_HEIGHT));
 
     CGRect lastDayFrame = CGRectZero;
     for (UILabel *dayLabel in self.dayOfWeekLabels) {
-        dayLabel.frame = CGRectMake(CGRectGetMaxX(lastDayFrame) + CELL_BORDER_WIDTH, lastDayFrame.origin.y, self.cellWidth, self.daysHeader.frame.size.height);
+        dayLabel.frame = CGRectIntegral(CGRectMake(CGRectGetMaxX(lastDayFrame) + CELL_BORDER_WIDTH, lastDayFrame.origin.y, self.cellWidth, self.daysHeader.frame.size.height));
         lastDayFrame = dayLabel.frame;
     }
 
@@ -360,7 +361,7 @@
     }
     NSInteger placeInWeek = [self placeInWeekForDate:date];
 
-    return CGRectMake(placeInWeek * (self.cellWidth + CELL_BORDER_WIDTH), (row * (self.cellWidth + CELL_BORDER_WIDTH)) + CGRectGetMaxY(self.daysHeader.frame) + CELL_BORDER_WIDTH, self.cellWidth, self.cellWidth);
+    return CGRectIntegral(CGRectMake(placeInWeek * (self.cellWidth + CELL_BORDER_WIDTH), (row * (self.cellWidth + CELL_BORDER_WIDTH)) + CGRectGetMaxY(self.daysHeader.frame) + CELL_BORDER_WIDTH, self.cellWidth, self.cellWidth));
 }
 
 - (void)moveCalendarToNextMonth;
@@ -462,8 +463,8 @@
 }
 
 - (void)setButtonColor:(UIColor *)color {
-    [self.prevButton setImage:[CKCalendarView imageNamed:@"left_arrow.png" withColor:color] forState:UIControlStateNormal];
-    [self.nextButton setImage:[CKCalendarView imageNamed:@"right_arrow.png" withColor:color] forState:UIControlStateNormal];
+    [self.prevButton setImage:[CKCalendarView imageNamed:kCalendarArrowButtonLeft withColor:color] forState:UIControlStateNormal];
+    [self.nextButton setImage:[CKCalendarView imageNamed:kCalendarArrowButtonRight withColor:color] forState:UIControlStateNormal];
 }
 
 - (void)setInnerBorderColor:(UIColor *)color {

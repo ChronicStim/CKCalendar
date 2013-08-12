@@ -32,6 +32,8 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [self.pickerView awakeFromNib];
+    [self.pickerView setMinimumDate:[NSDate dateWithTimeIntervalSince1970:0]];
+    
     [self setNavBar];
 }
 
@@ -51,11 +53,19 @@
     }
     
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Today",@"PainTracker",@"Today") style:UIBarButtonItemStylePlain target:self action:@selector(barButtonTodayPressed:)];
-    [leftButton setTintColor:[UIColor cptPrimaryColor]];
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
+        [leftButton setTintColor:[UIColor whiteColor]];
+    } else {
+        [leftButton setTintColor:[UIColor cptPrimaryColor]];
+    }
     self.navigationItem.leftBarButtonItem = leftButton;
     
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Apply",@"PainTracker",@"Apply") style:UIBarButtonItemStylePlain target:self action:@selector(barButtonSelectPressed:)];
-    [rightButton setTintColor:[UIColor cptPrimaryColorSelected]];
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
+        [rightButton setTintColor:[UIColor cptPrimaryColorSelected]];
+    } else {
+        [rightButton setTintColor:[UIColor cptPrimaryColorSelected]];
+    }
     self.navigationItem.rightBarButtonItem = rightButton;
 }
 

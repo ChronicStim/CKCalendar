@@ -405,7 +405,11 @@
     _monthYearPopoverController = [[UIPopoverController alloc] initWithContentViewController:contentView];
     [_monthYearPopoverController setDelegate:self];
     [_monthYearPopoverController setPopoverContentSize:CGSizeMake(320.f, 250.f)];
- 
+
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
+        [_monthYearPopoverController setBackgroundColor:[UIColor cptPrimaryColor]];
+    }
+
     return _monthYearPopoverController;
 }
 

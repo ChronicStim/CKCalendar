@@ -96,7 +96,7 @@
 
 - (void)pickerView:(UIPickerView *)pickerView didChangeDate:(NSDate*)newDate;
 {
-    DDLogVerbose(@"Did change date: %@",newDate);
+   //DDLogVerbose(@"Did change date: %@",newDate);
     [self setCurrentShowingDate:newDate];
 }
 

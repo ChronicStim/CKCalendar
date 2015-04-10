@@ -438,7 +438,7 @@
 
 -(void)dateChangeToNewDate:(NSDate *)newDate;
 {
-    DDLogVerbose(@"Change date to %@",newDate);
+   //DDLogVerbose(@"Change date to %@",newDate);
     [self setMonthShowing:newDate];
     [self.monthYearPopoverController dismissPopoverAnimated:YES];
     [self setMonthYearPopoverController:nil];

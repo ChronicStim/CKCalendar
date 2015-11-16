@@ -209,7 +209,10 @@
         [self setDefaultStyle];
     }
 
-    [self layoutSubviews]; // TODO: this is a hack to get the first month to show properly
+//    [self layoutSubviews]; // TODO: this is a hack to get the first month to show properly
+    [self setNeedsLayout];
+    [self layoutIfNeeded];
+    
     return self;
 }
 

@@ -57,7 +57,7 @@
 
 - (void)setDate:(NSDate *)date {
     _date = date;
-    NSDateComponents *comps = [self.calendar components:NSDayCalendarUnit|NSMonthCalendarUnit fromDate:date];
+    NSDateComponents *comps = [self.calendar components:NSCalendarUnitDay|NSCalendarUnitMonth fromDate:date];
     [self setTitle:[NSString stringWithFormat:@"%ld", (long)comps.day] forState:UIControlStateNormal];
 }
 
@@ -118,7 +118,7 @@
     if (self) {
         self.calendarStartDay = firstDay;
 
-        self.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        self.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
         [self.calendar setLocale:[NSLocale currentLocale]];
         [self.calendar setFirstWeekday:self.calendarStartDay];
         self.cellWidth = DEFAULT_CELL_WIDTH;
@@ -536,14 +536,14 @@
 
 - (NSDate *)firstDayOfMonthContainingDate:(NSDate *)date;
 {
-    NSDateComponents *comps = [self.calendar components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:date];
+    NSDateComponents *comps = [self.calendar components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:date];
     comps.day = 1;
     return [self.calendar dateFromComponents:comps];
 }
 
 - (NSDate *)firstDayOfNextMonthContainingDate:(NSDate *)date;
 {
-    NSDateComponents *comps = [self.calendar components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:date];
+    NSDateComponents *comps = [self.calendar components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:date];
     comps.day = 1;
     comps.month = comps.month + 1;
     return [self.calendar dateFromComponents:comps];
@@ -551,8 +551,8 @@
 
 - (NSComparisonResult)compareByMonth:(NSDate *)date toDate:(NSDate *)otherDate;
 {
-    NSDateComponents *day = [self.calendar components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:date];
-    NSDateComponents *day2 = [self.calendar components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:otherDate];
+    NSDateComponents *day = [self.calendar components:NSCalendarUnitYear|NSCalendarUnitMonth fromDate:date];
+    NSDateComponents *day2 = [self.calendar components:NSCalendarUnitYear|NSCalendarUnitMonth fromDate:otherDate];
 
     if (day.year < day2.year) {
         return NSOrderedAscending;
@@ -581,7 +581,7 @@
 
 - (NSInteger)placeInWeekForDate:(NSDate *)date;
 {
-    NSDateComponents *compsFirstDayInMonth = [self.calendar components:NSWeekdayCalendarUnit fromDate:date];
+    NSDateComponents *compsFirstDayInMonth = [self.calendar components:NSCalendarUnitWeekday fromDate:date];
     return (compsFirstDayInMonth.weekday - 1 - self.calendar.firstWeekday + 8) % 7;
 }
 
@@ -597,8 +597,8 @@
         return NO;
     }
 
-    NSDateComponents *day = [self.calendar components:NSEraCalendarUnit|NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date1];
-    NSDateComponents *day2 = [self.calendar components:NSEraCalendarUnit|NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date2];
+    NSDateComponents *day = [self.calendar components:NSCalendarUnitEra|NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date1];
+    NSDateComponents *day2 = [self.calendar components:NSCalendarUnitEra|NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date2];
     return ([day2 day] == [day day] &&
             [day2 month] == [day month] &&
             [day2 year] == [day year] &&
@@ -609,13 +609,13 @@
 {
     // Return zero-based week in month
     NSInteger placeInWeek = [self placeInWeekForDate:self.monthShowing];
-    NSDateComponents *comps = [self.calendar components:(NSDayCalendarUnit) fromDate:date];
+    NSDateComponents *comps = [self.calendar components:(NSCalendarUnitDay) fromDate:date];
     return (comps.day + placeInWeek - 1) / 7;
 }
 
 - (NSInteger)numberOfWeeksInMonthContainingDate:(NSDate *)date;
 {
-    return [self.calendar rangeOfUnit:NSWeekCalendarUnit inUnit:NSMonthCalendarUnit forDate:date].length;
+    return [self.calendar rangeOfUnit:NSCalendarUnitWeekOfMonth inUnit:NSCalendarUnitMonth forDate:date].length;
 }
 
 - (NSDate *)nextDay:(NSDate *)date;

@@ -27,20 +27,52 @@
     return self;
 }
 
+-(void)awakeFromNib;
+{
+    [super awakeFromNib];
+    
+    [self bk_addObserverForKeyPath:@"currentShowingDate" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) task:^(id obj, NSDictionary *change) {
+        
+        NSDate *oldDate = [change objectForKey:NSKeyValueChangeOldKey];
+        NSDate *newDate = [change objectForKey:NSKeyValueChangeNewKey];
+        
+        if (nil == newDate) {
+            [self.pickerView setDate:[NSDate date]];
+        }
+        else if ([oldDate isEqualToDate:newDate]) {
+            return;
+        }
+        else {
+            [self.pickerView setDate:newDate];
+        }
+    }];
+    [self.pickerView setMinimumDate:[NSDate dateWithTimeIntervalSince1970:0]];
+}
+
+-(void)viewWillAppear:(BOOL)animated;
+{
+    [super viewWillAppear:animated];
+    
+    [self setNavBar];
+    
+    if (nil != self.currentShowingDate && ![self.currentShowingDate isEqualToDate:self.pickerView.date]) {
+        [self.pickerView setDate:self.currentShowingDate];
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [self.pickerView awakeFromNib];
-    [self.pickerView setMinimumDate:[NSDate dateWithTimeIntervalSince1970:0]];
-    
-    [self setNavBar];
+
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    
+    [self bk_removeAllBlockObservers];
 }
 
 -(void)setNavBar {
@@ -67,14 +99,6 @@
         [rightButton setTintColor:[UIColor cptPrimaryColorSelected]];
     }
     self.navigationItem.rightBarButtonItem = rightButton;
-}
-
--(void)setCurrentShowingDate:(NSDate *)currentShowingDate;
-{
-    if (currentShowingDate != _currentShowingDate) {
-        _currentShowingDate = currentShowingDate;
-        [self.pickerView setDate:_currentShowingDate];
-    }
 }
 
 - (IBAction)barButtonCancelPressed:(id)sender {

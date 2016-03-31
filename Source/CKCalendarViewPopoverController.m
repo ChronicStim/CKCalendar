@@ -37,13 +37,13 @@
         NSDate *newDate = [change objectForKey:NSKeyValueChangeNewKey];
         
         if (nil == newDate) {
-            [self.pickerView setDate:[NSDate date]];
+            [[(CKCalendarViewPopoverController *)obj pickerView] setDate:[NSDate date]];
         }
         else if ([oldDate isEqualToDate:newDate]) {
             return;
         }
         else {
-            [self.pickerView setDate:newDate];
+            [[(CKCalendarViewPopoverController *)obj pickerView] setDate:newDate];
         }
     }];
     [self.pickerView setMinimumDate:[NSDate dateWithTimeIntervalSince1970:0]];

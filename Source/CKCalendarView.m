@@ -61,7 +61,10 @@
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
         comps = [self.calendar components:NSCalendarUnitDay|NSCalendarUnitMonth fromDate:date];
     } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         comps = [self.calendar components:NSDayCalendarUnit|NSMonthCalendarUnit fromDate:date];
+#pragma clang diagnostic pop
     }
 
     [self setTitle:[NSString stringWithFormat:@"%ld", (long)comps.day] forState:UIControlStateNormal];
@@ -127,7 +130,10 @@
         if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
             self.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
         } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
             self.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+#pragma clang diagnostic pop
         }
 
         [self.calendar setLocale:[NSLocale currentLocale]];
@@ -554,7 +560,10 @@
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
         comps = [self.calendar components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:date];
     } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         comps = [self.calendar components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:date];
+#pragma clang diagnostic pop
     }
     
 
@@ -568,7 +577,10 @@
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
         comps = [self.calendar components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:date];
     } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         comps = [self.calendar components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:date];
+#pragma clang diagnostic pop
     }
     
 
@@ -585,8 +597,11 @@
         day = [self.calendar components:NSCalendarUnitYear|NSCalendarUnitMonth fromDate:date];
         day2 = [self.calendar components:NSCalendarUnitYear|NSCalendarUnitMonth fromDate:otherDate];
     } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         day = [self.calendar components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:date];
         day2 = [self.calendar components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:otherDate];
+#pragma clang diagnostic pop
     }
 
     if (day.year < day2.year) {
@@ -620,7 +635,10 @@
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
         compsFirstDayInMonth = [self.calendar components:NSCalendarUnitWeekday fromDate:date];
     } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         compsFirstDayInMonth = [self.calendar components:NSWeekdayCalendarUnit fromDate:date];
+#pragma clang diagnostic pop
     }
 
     return (compsFirstDayInMonth.weekday - 1 - self.calendar.firstWeekday + 8) % 7;
@@ -644,8 +662,11 @@
         day = [self.calendar components:NSCalendarUnitEra|NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date1];
         day2 = [self.calendar components:NSCalendarUnitEra|NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date2];
     } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         day = [self.calendar components:NSEraCalendarUnit|NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date1];
         day2 = [self.calendar components:NSEraCalendarUnit|NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date2];
+#pragma clang diagnostic pop
     }
     
 
@@ -663,7 +684,10 @@
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
         comps = [self.calendar components:(NSCalendarUnitDay) fromDate:date];
     } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         comps = [self.calendar components:(NSDayCalendarUnit) fromDate:date];
+#pragma clang diagnostic pop
     }
     
 
@@ -675,7 +699,10 @@
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
         return [self.calendar rangeOfUnit:NSCalendarUnitWeekOfMonth inUnit:NSCalendarUnitMonth forDate:date].length;
     } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         return [self.calendar rangeOfUnit:NSWeekCalendarUnit inUnit:NSMonthCalendarUnit forDate:date].length;
+#pragma clang diagnostic pop
     }
 
 }

@@ -78,7 +78,7 @@
 -(void)setNavBar {
     
 	NSString *titleStr = NSLocalizedStringFromTable(@"Month Selection",@"PainTracker",@"Month Selection");
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         [self updateNavigationBarTitle:titleStr showHelpButton:NO];
     } else {
         [self updateNavigationBarTitle:titleStr showHelpButton:NO];
